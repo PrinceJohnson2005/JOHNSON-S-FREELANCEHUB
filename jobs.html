@@ -1,45 +1,341 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>𝖩𝖮𝖧𝖭𝖲𝖮𝖭'𝖲 𝖥𝖱𝖤𝖤𝖫𝖠𝖭𝖢𝖤 𝖧𝖴𝖡 - Browse Jobs</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>𝖩𝖮𝖧𝖭𝖲𝖮𝖭'𝖲 𝖥𝖱𝖤𝖤𝖫𝖠𝖭𝖢𝖤 𝖧𝖴𝖡 · Browse Jobs</title>
+  
+  <!-- Single‑file build: HTML + CSS only (no external CSS/JS/fonts) -->
+  <style>
+    /* ============ CSS RESET (lightweight) ============ */
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    img{max-width:100%;display:block}
+    button,input,select,textarea{font:inherit}
+
+    /* ============ THEME ============ */
+    :root{
+      --bg: #0b0f14;
+      --bg-elev: #0f141b;
+      --card: #121926;
+      --txt: #e6edf6;
+      --muted: #a8b3c7;
+      --brand-1: #8b5cf6; /* violet */
+      --brand-2: #06b6d4; /* cyan */
+      --brand-3: #22c55e; /* green */
+      --accent: #ff7a59; /* coral */
+      --ring: rgba(139,92,246,.55);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius-sm: 14px;
+      --radius-lg: 28px;
+      --spacing: clamp(16px, 2vw, 28px);
+    }
+    body{
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Noto Sans, Ubuntu, Cantarell, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--txt);
+      background:
+        radial-gradient(1200px 600px at -10% -20%, rgba(34,197,94,.15), transparent 60%),
+        radial-gradient(1000px 600px at 110% 10%, rgba(6,182,212,.18), transparent 60%),
+        radial-gradient(800px 500px at 50% 120%, rgba(139,92,246,.18), transparent 60%),
+        linear-gradient(180deg, #0a0e13, #0b0f14 20% 80%, #0b0f14);
+      min-height: 100dvh;
+      line-height: 1.5;
+    }
+    a{color:inherit;text-decoration:none}
+
+    /* ============ LAYOUT ============ */
+    .container{width:min(1200px, 92%);margin-inline:auto}
+
+    /* ============ NAVBAR ============ */
+    .navbar{
+      position:sticky;top:0;z-index:10;
+      backdrop-filter: saturate(180%) blur(10px);
+      background: linear-gradient(180deg, rgba(11,15,20,.85), rgba(11,15,20,.65));
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px var(--spacing)}
+    .logo{
+      display:flex;gap:.6rem;align-items:center;font-weight:800;letter-spacing:.3px;
+      background: linear-gradient(90deg, var(--brand-2), var(--brand-1));
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      font-size: clamp(18px, 2.2vw, 22px);
+    }
+    .nav-links{display:flex;gap:18px}
+    .pill{padding:8px 14px;border-radius:999px;color:var(--txt);opacity:.85}
+    .pill.active{background:linear-gradient(90deg, rgba(139,92,246,.2), rgba(6,182,212,.2));border:1px solid rgba(139,92,246,.35)}
+
+    /* ============ HERO ============ */
+    .hero{position:relative;overflow:hidden}
+    .hero .wrap{display:grid;gap:18px;padding:clamp(28px,5vw,56px) var(--spacing)}
+    .kicker{color:var(--muted);font-size:14px;letter-spacing:.25em;text-transform:uppercase}
+    .title{font-size:clamp(28px, 4.6vw, 56px);line-height:1.05;font-weight:900}
+    .subtitle{color:var(--muted);max-width:60ch}
+    .search{
+      margin-top:14px;display:grid;gap:10px;grid-template-columns: 1fr auto;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);border-radius: var(--radius);
+      padding:8px;
+      box-shadow: var(--shadow);
+    }
+    .search input{border:0;outline:0;background:transparent;padding:16px;border-radius:14px;color:var(--txt)}
+    .btn{
+      border:0;cursor:pointer;border-radius:14px;padding:12px 18px;font-weight:700;
+      background: linear-gradient(90deg, var(--brand-2), var(--brand-1));
+      color:#0b0f14;box-shadow:0 8px 20px rgba(139,92,246,.25);
+    }
+    .btn:hover{filter:saturate(110%)}
+
+    /* ============ CONTENT WRAPPER ============ */
+    .content{display:grid;grid-template-columns:280px 1fr;gap:24px;padding:0 var(--spacing) var(--spacing)}
+    @media (max-width: 900px){.content{grid-template-columns:1fr}}
+
+    /* ============ FILTERS (HTML‑only via <details>) ============ */
+    .filters{
+      position:sticky;top:72px;height:fit-content;border-radius:var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.07);padding:18px;box-shadow:var(--shadow)
+    }
+    .filters h3{margin:0 0 6px;font-size:18px}
+    details{border-radius:14px;border:1px dashed rgba(255,255,255,.1);padding:10px 12px;margin:10px 0;background:rgba(255,255,255,.02)}
+    summary{cursor:pointer;font-weight:700}
+    .chip{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;margin:6px 6px 0 0;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);font-size:13px}
+
+    /* ============ JOB GRID ============ */
+    .jobs{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+    .job{
+      grid-column: span 12;
+      background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      padding:18px;display:grid;grid-template-columns: 56px 1fr auto;gap:16px;align-items:center;
+      box-shadow: var(--shadow);
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .job:hover{transform: translateY(-3px);border-color: rgba(139,92,246,.4);box-shadow:0 16px 36px rgba(0,0,0,.45)}
+    .logo-badge{height:56px;width:56px;border-radius:14px;display:grid;place-items:center;
+      background: radial-gradient(120% 120% at 0% 0%, rgba(139,92,246,.35), rgba(6,182,212,.2) 60%, rgba(255,255,255,.05));
+      border:1px solid rgba(255,255,255,.12)
+    }
+    .meta{display:flex;flex-wrap:wrap;gap:10px;color:var(--muted);font-size:14px}
+    .title-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .title-row h3{margin:0;font-size:clamp(18px,2.2vw,22px)}
+    .badges{display:flex;flex-wrap:wrap;gap:8px}
+    .badge{padding:6px 10px;border-radius:999px;font-size:12px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04)}
+    .badge.hot{border-color:rgba(255,122,89,.55);background:rgba(255,122,89,.12);color:#ffd0c4}
+    .cta{display:grid;gap:10px;justify-items:end}
+    .apply{background:linear-gradient(90deg, var(--brand-3), var(--brand-2));color:#052016;border:0;padding:10px 14px;border-radius:12px;font-weight:800;cursor:pointer}
+    .ghost{background:transparent;border:1px solid rgba(255,255,255,.12);padding:10px 14px;border-radius:12px;color:var(--txt);font-weight:700}
+
+    /* GRID BEHAVIOR */
+    @media (min-width:720px){.job{grid-column: span 12}}
+    @media (min-width:980px){.job{grid-column: span 12}}
+
+    /* ============ PAGINATION ============ */
+    .pager{display:flex;justify-content:center;gap:8px;margin-top:18px}
+    .page{padding:10px 14px;border:1px solid rgba(255,255,255,.12);border-radius:12px}
+    .page.active{border-color:var(--ring);box-shadow:0 0 0 3px var(--ring)}
+
+    /* ============ FOOTER ============ */
+    footer{margin-top:42px;padding:28px var(--spacing);border-top:1px solid rgba(255,255,255,.06);color:var(--muted);text-align:center}
+
+    /* ============ SIMPLE ICONS (inline SVG sized via .ico) ============ */
+    .ico{width:18px;height:18px;vertical-align:middle}
+
+    /* ============ NICE FOCUS RING ============ */
+    :focus-visible{outline:3px solid var(--ring);outline-offset:2px;border-radius:10px}
+  </style>
 </head>
 <body>
-  <header>
-    <nav class="navbar">
-      <div class="logo"><a href="index.html">𝖩𝖮𝖧𝖭𝖲𝖮𝖭'𝖲 𝖥𝖱𝖤𝖤𝖫𝖠𝖭𝖢𝖤 𝖧𝖴𝖡</a></div>
-      <ul class="nav-links">
-        <li><a href="jobs.html" class="active">Browse Jobs</a></li>
-        <li><a href="post-job.html">Post a Job</a></li>
-        <li><a href="profile.html">Profile</a></li>
-      </ul>
-    </nav>
+  <!-- NAVBAR -->
+  <header class="navbar" role="banner">
+    <div class="nav-inner container" aria-label="Primary navigation">
+      <a class="logo" href="#" aria-label="Home">𝖩𝖮𝖧𝖭𝖲𝖮𝖭'𝖲&nbsp;𝖥𝖱𝖤𝖤𝖫𝖠𝖭𝖢𝖤&nbsp;𝖧𝖴𝖡</a>
+      <nav class="nav-links" role="navigation">
+        <a class="pill active" href="#">Browse Jobs</a>
+        <a class="pill" href="#">Post a Job</a>
+        <a class="pill" href="#">Profile</a>
+      </nav>
+    </div>
   </header>
 
-  <section class="content">
-    <h1>Available Jobs</h1>
-    <div class="job-card">
-      <h3>Web Developer Needed</h3>
-      <p>Build a responsive portfolio website.</p>
-      <button class="apply-btn">Apply</button>
-    </div>
-    <div class="job-card">
-      <h3>Graphic Designer</h3>
-      <p>Create branding assets for a startup.</p>
-      <button class="apply-btn">Apply</button>
-    </div>
-    <div class="job-card">
-      <h3>Content Writer</h3>
-      <p>Write engaging blog posts for tech topics.</p>
-      <button class="apply-btn">Apply</button>
+  <!-- HERO -->
+  <section class="hero" role="region" aria-label="Search jobs">
+    <div class="wrap container">
+      <div class="kicker">Find work that fits your vibe</div>
+      <h1 class="title">Browse Curated Gigs from Top Clients</h1>
+      <p class="subtitle">Discover remote‑friendly roles with transparent pay, clear scope, and fast hiring. No sign‑up needed to explore.</p>
+      <form class="search" role="search" aria-label="Search jobs" onsubmit="return false">
+        <input type="search" name="q" placeholder="Try ‘React developer’, ‘Logo design’, ‘Remote’" aria-label="Keywords" />
+        <button class="btn" type="submit" aria-label="Search">Search</button>
+      </form>
+      <div class="badges" aria-label="Quick filters">
+        <span class="badge">Remote</span>
+        <span class="badge">Part‑time</span>
+        <span class="badge">Entry</span>
+        <span class="badge">Design</span>
+        <span class="badge">Development</span>
+      </div>
     </div>
   </section>
 
-  <footer>
-    <p>© 2021 𝖩𝖮𝖧𝖭𝖲𝖮𝖭'𝖲 𝖥𝖱𝖤𝖤𝖫𝖠𝖭𝖢𝖤 𝖧𝖴𝖡</p>
+  <!-- CONTENT -->
+  <main class="content container" role="main">
+    <!-- Filters (HTML only using <details>) -->
+    <aside class="filters" aria-label="Filters">
+      <h3>Refine Results</h3>
+      <details open>
+        <summary>Work Type</summary>
+        <div class="chips">
+          <span class="chip">Remote</span>
+          <span class="chip">On‑site</span>
+          <span class="chip">Hybrid</span>
+        </div>
+      </details>
+      <details>
+        <summary>Budget</summary>
+        <div class="chips">
+          <span class="chip">$</span>
+          <span class="chip">$$</span>
+          <span class="chip">$$$</span>
+        </div>
+      </details>
+      <details>
+        <summary>Experience</summary>
+        <div class="chips">
+          <span class="chip">Entry</span>
+          <span class="chip">Mid</span>
+          <span class="chip">Senior</span>
+        </div>
+      </details>
+      <details>
+        <summary>Category</summary>
+        <div class="chips">
+          <span class="chip">Development</span>
+          <span class="chip">Design</span>
+          <span class="chip">Writing</span>
+          <span class="chip">Marketing</span>
+        </div>
+      </details>
+    </aside>
+
+    <!-- Job Cards -->
+    <section class="jobs" aria-label="Job results">
+      <!-- Job 1 -->
+      <article class="job" aria-label="Web Developer Needed">
+        <div class="logo-badge" aria-hidden="true">
+          <!-- Inline SVG icon -->
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18v14H3z"/><path d="M8 22h8"/><path d="M12 18v4"/></svg>
+        </div>
+        <div>
+          <div class="title-row">
+            <h3>Web Developer Needed</h3>
+            <span class="badge hot">Urgent</span>
+            <span class="badge">Remote</span>
+            <span class="badge">Contract</span>
+          </div>
+          <div class="meta">
+            <span>Build a responsive portfolio website</span>
+            <span>•</span>
+            <span>Fixed: $800–$1,200</span>
+            <span>•</span>
+            <span>Posted 2d ago</span>
+          </div>
+        </div>
+        <div class="cta">
+          <button class="apply" type="button">Apply</button>
+          <button class="ghost" type="button">Save</button>
+        </div>
+      </article>
+
+      <!-- Job 2 -->
+      <article class="job" aria-label="Graphic Designer">
+        <div class="logo-badge" aria-hidden="true">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M19 3v4h-4"/><path d="M5 21v-4h4"/></svg>
+        </div>
+        <div>
+          <div class="title-row">
+            <h3>Graphic Designer</h3>
+            <span class="badge">Branding</span>
+            <span class="badge">Illustration</span>
+          </div>
+          <div class="meta">
+            <span>Create branding assets for a startup</span>
+            <span>•</span>
+            <span>Hourly: $20–$35</span>
+            <span>•</span>
+            <span>Posted 5h ago</span>
+          </div>
+        </div>
+        <div class="cta">
+          <button class="apply" type="button">Apply</button>
+          <button class="ghost" type="button">Save</button>
+        </div>
+      </article>
+
+      <!-- Job 3 -->
+      <article class="job" aria-label="Content Writer">
+        <div class="logo-badge" aria-hidden="true">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16"/><path d="M6 4h12v12H6z"/><path d="M8 8h8M8 12h6"/></svg>
+        </div>
+        <div>
+          <div class="title-row">
+            <h3>Content Writer</h3>
+            <span class="badge">Blog</span>
+            <span class="badge">Tech</span>
+          </div>
+          <div class="meta">
+            <span>Write engaging posts on emerging tech</span>
+            <span>•</span>
+            <span>Per article: $80–$150</span>
+            <span>•</span>
+            <span>Posted 1w ago</span>
+          </div>
+        </div>
+        <div class="cta">
+          <button class="apply" type="button">Apply</button>
+          <button class="ghost" type="button">Save</button>
+        </div>
+      </article>
+
+      <!-- Job 4 (extra example) -->
+      <article class="job" aria-label="Mobile App UI/UX Designer">
+        <div class="logo-badge" aria-hidden="true">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="3"/><path d="M12 18h.01"/></svg>
+        </div>
+        <div>
+          <div class="title-row">
+            <h3>Mobile App UI/UX Designer</h3>
+            <span class="badge">Figma</span>
+            <span class="badge">iOS/Android</span>
+          </div>
+          <div class="meta">
+            <span>Design a clean fintech onboarding flow</span>
+            <span>•</span>
+            <span>Fixed: $1,500</span>
+            <span>•</span>
+            <span>Posted 3d ago</span>
+          </div>
+        </div>
+        <div class="cta">
+          <button class="apply" type="button">Apply</button>
+          <button class="ghost" type="button">Save</button>
+        </div>
+      </article>
+
+      <!-- Pagination (static HTML) -->
+      <nav class="pager" aria-label="Pagination">
+        <a href="#" class="page" aria-label="Previous">«</a>
+        <a href="#" class="page active" aria-current="page">1</a>
+        <a href="#" class="page">2</a>
+        <a href="#" class="page">3</a>
+        <a href="#" class="page" aria-label="Next">»</a>
+      </nav>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    © <span id="year">2025</span> 𝖩𝖮𝖧𝖭𝖲𝖮𝖭'𝖲 𝖥𝖱𝖤𝖤𝖫𝖠𝖭𝖢𝖤 𝖧𝖴𝖡 · Built with ♥ using only HTML + CSS
   </footer>
-  <script src="js/script.js"></script>
 </body>
 </html>
