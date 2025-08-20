@@ -2,45 +2,75 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>𝖩𝖮𝖧𝖭𝖲𝖮𝖭'𝖲 𝖥𝖱𝖤𝖤𝖫𝖠𝖭𝖢𝖤 𝖧𝖴𝖡 - Profile</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prince Johnson – Web Developer Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <style>
+    body { font-family: 'Poppins', sans-serif; line-height: 1.6; color: #333; }
+    .hero { min-height: 60vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f0f4f8, #d9e2ec); }
+    .hero h1 { font-size: 3rem; margin-bottom: 0.5rem; }
+    .hero p { font-size: 1.2rem; color: #555; }
+    .skills ul { list-style: none; padding: 0; }
+    .skills li { background: #e1e7ee; margin: 0.5rem 0; padding: 0.5rem 1rem; border-radius: 0.5rem; display: inline-block; }
+    .projects img { max-width: 100%; border-radius: 0.5rem; transition: transform 0.3s; }
+    .projects img:hover { transform: scale(1.05); }
+    .contact a { margin-right: 1rem; color: #333; transition: color 0.3s; }
+    .contact a:hover { color: #007bff; }
+  </style>
 </head>
 <body>
-  <header>
-    <nav class="navbar">
-      <div class="logo"><a href="index.html">𝖩𝖮𝖧𝖭𝖲𝖮𝖭'𝖲 𝖥𝖱𝖤𝖤𝖫𝖠𝖭𝖢𝖤 𝖧𝖴𝖡</a></div>
-      <ul class="nav-links">
-        <li><a href="jobs.html">Browse Jobs</a></li>
-        <li><a href="post-job.html">Post a Job</a></li>
-        <li><a href="profile.html" class="active">Profile</a></li>
-      </ul>
-    </nav>
-  </header>
-<div        
-style="width: 200;
-       height: 200;
-       display: flex;
-       align-items: center;
-       justify-content: center;
-       ">
-       <section class="profile">
-    <img src="profile.jpg" alt="Profile Picture" class="profile-pic" width="200">
-    <h2>Prince Johnson</h2>
-    <p>Web Developer | 5 years experience</p>
-    <h3>Skills</h3>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Prince Johnson</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+          <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero text-center">
+    <div>
+      <h1>Hello, I'm Prince Johnson</h1>
+      <p>Web Developer with 2 years of experience</p>
+    </div>
+  </section>
+
+  <section id="about" class="container my-5 text-center">
+    <img src="profile.jpg" alt="Profile Picture" class="rounded-circle mb-3" width="200">
+    <p>Dedicated web developer skilled in creating responsive and interactive websites.</p>
+  </section>
+
+  <section id="skills" class="container my-5 skills text-center">
+    <h2>Skills</h2>
     <ul>
-        <li>HTML, CSS, JavaScript</li>
-        <li>Video editing : Premiere Pro</li>
-        <li>Photo editing & designing : LightRoom , PhotoShop</li>
+      <li>HTML</li><li>CSS</li><li>JavaScript</li>
+      <li>Video Editing (Premiere Pro)</li>
+      <li>Photo Editing (Lightroom, Photoshop)</li>
     </ul>
-</section>
-</div>
-      
+  </section>
 
+  <section id="projects" class="container my-5 projects">
+    <h2>Projects</h2>
+    <div class="row g-4">
+      <div class="col-md-4"><img src="project1.png" alt="Project 1"></div>
+      <div class="col-md-4"><img src="profileee.jpeg" alt="Project 2"></div>
+      <div class="col-md-4"><img src="profilee.jpeg" alt="Project 3"></div>
+    </div>
+  </section>
 
-  <footer>
-    <p>© 2021 𝖩𝖮𝖧𝖭𝖲𝖮𝖭'𝖲 𝖥𝖱𝖤𝖤𝖫𝖠𝖭𝖢𝖤 𝖧𝖴𝖡</p>
+  <section id="contact" class="container my-5 contact text-center">
+    <h2>Contact Me</h2>
+    <a href="#" class="btn btn-outline-primary">Email</a>
+    <a href="#" class="btn btn-outline-secondary">LinkedIn</a>
+  </section>
+
+  <footer class="bg-light text-center py-3">
+    <p>© 2021 Prince Johnson</p>
   </footer>
 </body>
 </html>
